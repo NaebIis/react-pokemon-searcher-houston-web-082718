@@ -1,17 +1,41 @@
-import React from 'react'
-import { Form } from 'semantic-ui-react'
+import React from "react";
+import { Form } from "semantic-ui-react";
 
 class PokemonForm extends React.Component {
   constructor() {
-    super()
+    super();
 
     this.state = {
-      name: '',
-      hp: '',
-      frontUrl: '',
-      backUrl: ''
-    }
+      name: "",
+      hp: "",
+      frontUrl: "",
+      backUrl: ""
+    };
   }
+
+  handleSubmit = event => {
+    let data = {
+      name: event.target.name.value,
+      sprites: {
+        front: event.target.frontUrl.value,
+        back: event.target.backUrl.value
+      },
+      stats: [
+        {
+          value: event.target.hp.value,
+          name: "hp"
+        }
+      ]
+    };
+    fetch("http://localhost:3000/pokemon", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+  };
 
   render() {
     return (
@@ -21,14 +45,24 @@ class PokemonForm extends React.Component {
           <Form.Group widths="equal">
             <Form.Input fluid label="Name" placeholder="Name" name="name" />
             <Form.Input fluid label="hp" placeholder="hp" name="hp" />
-            <Form.Input fluid label="Front Image URL" placeholder="url" name="frontUrl" />
-            <Form.Input fluid label="Back Image URL" placeholder="url" name="backUrl" />
+            <Form.Input
+              fluid
+              label="Front Image URL"
+              placeholder="url"
+              name="frontUrl"
+            />
+            <Form.Input
+              fluid
+              label="Back Image URL"
+              placeholder="url"
+              name="backUrl"
+            />
           </Form.Group>
           <Form.Button>Submit</Form.Button>
         </Form>
       </div>
-    )
+    );
   }
 }
 
-export default PokemonForm
+export default PokemonForm;
